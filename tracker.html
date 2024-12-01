@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practice Tracker - Qigong App</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+<header>
+  <h1>Practice Tracker</h1>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="tutorials.html">Video Tutorials</a></li>
+      <li><a href="sounds.html">Six Healing Sounds</a></li>
+      <li><a href="tracker.html">Practice Tracker</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section id="tracker">
+    <h2>Log Your Daily Reflections</h2>
+    <form id="tracker-form">
+      <label for="date">Date:</label>
+      <input type="date" id="date" required>
+
+      <div id="prompt-container">
+        <p id="current-prompt">How did your body feel during today’s practice?</p>
+        <button type="button" id="next-prompt">Next Prompt</button>
+      </div>
+
+      <label for="reflection">Your Reflection:</label>
+      <textarea id="reflection" rows="5" placeholder="Write your reflection here..." required></textarea>
+
+      <button type="submit">Log Reflection</button>
+    </form>
+    <div id="log">
+      <h3>Your Reflection Logs</h3>
+      <ul id="log-list"></ul>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <p>&copy; 2024 Qigong App</p>
+</footer>
+
+<script src="../js/script.js"></script>
+</body>
+</html>

@@ -5,8 +5,12 @@ document.addEventListener('DOMContentLoaded', () => {
     soundButtons.forEach(button => {
         button.addEventListener('click', () => {
             const audioFile = button.getAttribute('src'); // Get audio file from the src attribute
-            const audio = new Audio(audioFile);
-            audio.play();
+            if (audioFile) {
+                const audio = new Audio(audioFile);
+                audio.play();
+            } else {
+                console.error("Audio file source not found for this button.");
+            }
         });
     });
 
@@ -15,79 +19,96 @@ document.addEventListener('DOMContentLoaded', () => {
     const logList = document.getElementById('log-list');
     const currentPrompt = document.getElementById('current-prompt');
     const nextPromptButton = document.getElementById('next-prompt');
+    const homepageLogSection = document.getElementById('homepage-log-section');
 
-    if (trackerForm && logList) {
-        // Prompt questions for reflections
-        const prompts = [
-            "How did your body feel during today’s practice?",
-            "What emotions arose during your session?",
-            "Did you notice any improvements in your movements?",
-            "What was the most challenging part of today’s practice?",
-            "How did your breathing feel during your session?"
-        ];
-        let currentPromptIndex = 0;
+    // Prompt questions for reflections
+    const prompts = [
+        "How did your body feel during today’s practice?",
+        "What emotions arose during your session?",
+        "Did you notice any improvements in your movements?",
+        "What was the most challenging part of today’s practice?",
+        "How did your breathing feel during your session?"
+    ];
+    let currentPromptIndex = 0;
 
-        // Retrieve logs from local storage
-        const reflectionLogs = JSON.parse(localStorage.getItem('reflectionLogs')) || [];
+    // Load and display logs from local storage
+    const reflectionLogs = JSON.parse(localStorage.getItem('reflectionLogs')) || [];
 
-        // Display existing logs
-        const displayLogs = () => {
+    const displayLogs = () => {
+        if (logList) {
             logList.innerHTML = ''; // Clear current logs
-            reflectionLogs.forEach((log, index) => {
-                const listItem = document.createElement('li');
-                listItem.innerHTML = `<strong>${log.date}</strong>: ${log.reflection} <button class="delete-log" data-index="${index}">Delete</button>`;
-                logList.appendChild(listItem);
-            });
-        };
+            if (reflectionLogs.length === 0) {
+                logList.innerHTML = '<p>No reflections yet. Start logging your practice!</p>';
+            } else {
+                reflectionLogs.forEach((log, index) => {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `
+                        <strong>${log.date}</strong>: ${log.reflection} 
+                        <button class="delete-log" data-index="${index}">Delete</button>
+                    `;
+                    logList.appendChild(listItem);
+                });
+            }
+        }
 
-        // Initial display of existing logs
-        displayLogs();
+        // Update homepage with latest logs
+        if (homepageLogSection) {
+            homepageLogSection.innerHTML = ''; // Clear existing logs on homepage
+            if (reflectionLogs.length === 0) {
+                homepageLogSection.innerHTML = '<p>No reflections available. Log your practice to see entries here!</p>';
+            } else {
+                const recentLogs = reflectionLogs.slice(-3); // Show the last 3 logs
+                recentLogs.forEach(log => {
+                    const entry = document.createElement('p');
+                    entry.innerHTML = `<strong>${log.date}</strong>: ${log.reflection}`;
+                    homepageLogSection.appendChild(entry);
+                });
+            }
+        }
+    };
 
-        // Cycle to the next prompt
+    displayLogs(); // Initial display of logs
+
+    // Cycle to the next prompt
+    if (nextPromptButton) {
         nextPromptButton.addEventListener('click', () => {
             currentPromptIndex = (currentPromptIndex + 1) % prompts.length;
             currentPrompt.textContent = prompts[currentPromptIndex];
         });
+    }
 
-        // Add new log
+    // Add new reflection log
+    if (trackerForm) {
         trackerForm.addEventListener('submit', (e) => {
-            e.preventDefault(); // Prevent page reload on form submission
+            e.preventDefault();
 
             const date = document.getElementById('date').value;
             const reflection = document.getElementById('reflection').value;
 
-            // Validate inputs before saving
             if (date && reflection) {
-                // Create new log object
                 const newLog = { date, reflection };
 
-                // Push to logs array
-                reflectionLogs.push(newLog);
+                reflectionLogs.push(newLog); // Add new log to the array
+                localStorage.setItem('reflectionLogs', JSON.stringify(reflectionLogs)); // Save to localStorage
+                displayLogs(); // Update log display
 
-                // Save to localStorage
-                localStorage.setItem('reflectionLogs', JSON.stringify(reflectionLogs));
-
-                // Update the displayed logs
-                displayLogs();
-
-                // Clear the form inputs
-                trackerForm.reset();
+                trackerForm.reset(); // Clear form inputs
             } else {
                 alert("Please fill out both the date and reflection fields.");
             }
         });
+    }
 
-        // Delete log functionality
+    // Delete reflection log
+    if (logList) {
         logList.addEventListener('click', (e) => {
             if (e.target.classList.contains('delete-log')) {
                 const index = e.target.getAttribute('data-index');
-                reflectionLogs.splice(index, 1); // Remove the selected log
-
-                // Update localStorage
-                localStorage.setItem('reflectionLogs', JSON.stringify(reflectionLogs));
-
-                // Refresh the displayed logs
-                displayLogs();
+                if (index !== null) {
+                    reflectionLogs.splice(index, 1); // Remove log from array
+                    localStorage.setItem('reflectionLogs', JSON.stringify(reflectionLogs)); // Save updated array
+                    displayLogs(); // Refresh logs
+                }
             }
         });
     }

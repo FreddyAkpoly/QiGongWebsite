@@ -27,34 +27,75 @@
         <h3>Lungs</h3>
         <p>Autumn | Metal | White</p>
         <button class="play-sound" src="Lungs.mp3">Play Sound</button>
+        <button class="view-movement" onclick="showMovement('lungs-movement')">View Movement</button>
+        <div class="movement-video" id="lungs-movement" style="display: none;">
+          <video controls>
+            <source src="Lungs.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
       </div>
       <div class="sound-item">
         <h3>Kidneys</h3>
         <p>Winter | Water | Dark Blue</p>
         <button class="play-sound" src="Kidney.mp3">Play Sound</button>
+        <button class="view-movement" onclick="showMovement('kidneys-movement')">View Movement</button>
+        <div class="movement-video" id="kidneys-movement" style="display: none;">
+          <video controls>
+            <source src="Kidneys.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
       </div>
       <div class="sound-item">
         <h3>Liver</h3>
         <p>Spring | Wood | Green</p>
         <button class="play-sound" src="Liver.mp3">Play Sound</button>
+        <button class="view-movement" onclick="showMovement('liver-movement')">View Movement</button>
+        <div class="movement-video" id="liver-movement" style="display: none;">
+          <video controls>
+            <source src="Liver.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
       </div>
       <div class="sound-item">
         <h3>Heart</h3>
         <p>Summer | Fire | Red</p>
         <button class="play-sound" src="Heart.mp3">Play Sound</button>
+        <button class="view-movement" onclick="showMovement('heart-movement')">View Movement</button>
+        <div class="movement-video" id="heart-movement" style="display: none;">
+          <video controls>
+            <source src="Heart.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
       </div>
       <div class="sound-item">
         <h3>Spleen</h3>
         <p>Late Summer | Earth | Golden Yellow</p>
         <button class="play-sound" src="Spleen.mp3">Play Sound</button>
+        <button class="view-movement" onclick="showMovement('spleen-movement')">View Movement</button>
+        <div class="movement-video" id="spleen-movement" style="display: none;">
+          <video controls>
+            <source src="Spleen.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
       </div>
       <div class="sound-item">
         <h3>Triple Warmer</h3>
         <p>Dark Purple</p>
         <button class="play-sound" src="Triple.mp3">Play Sound</button>
+        <button class="view-movement" onclick="showMovement('triple-movement')">View Movement</button>
+        <div class="movement-video" id="triple-movement" style="display: none;">
+          <video controls>
+            <source src="Triple.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
       </div>
     </div>
-
   </section>
 </main>
 
@@ -62,6 +103,12 @@
   <p>&copy; 2024 Qigong App</p>
 </footer>
 
-<script src="script.js"></script>
+<script>
+  function showMovement(id) {
+    const video = document.getElementById(id);
+    video.style.display = video.style.display === 'none' ? 'block' : 'none';
+  }
+</script>
+
 </body>
 </html>
